@@ -1,1 +1,16 @@
-<router-outlet></router-outlet>
+<header class="masthead mb-auto">
+  <div class="inner">
+    <h3 class="masthead-brand">Auth0 ICT</h3>
+    <nav class="nav nav-masthead justify-content-center">
+      <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+      <a *ngIf="auth.authenticated" class="nav-link" routerLink="/profile" routerLinkActive="active">Profile</a>
+
+      <a *ngIf="!auth.authenticated" class="nav-link" href="javascript:void(0)" (click)="auth.login()" >Login</a>
+      <a *ngIf="auth.authenticated" class="nav-link" href="javascript:void(0)" (click)="auth.logout()">Logout</a>
+    </nav>
+  </div>
+</header>
+
+<main role="main" class="inner cover clearfix">
+  <router-outlet></router-outlet>
+</main>
