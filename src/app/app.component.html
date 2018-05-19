@@ -6,7 +6,7 @@
       <a *ngIf="auth.authenticated" class="nav-link" routerLink="/profile" routerLinkActive="active">Profile</a>
 
       <a *ngIf="!auth.authenticated" class="nav-link" href="javascript:void(0)" (click)="auth.login()" >Login</a>
-      <a *ngIf="auth.authenticated" class="nav-link" href="javascript:void(0)" (click)="auth.logout()">Logout</a>
+      <a *ngIf="auth.authenticated" class="nav-link" href="javascript:void(0)" (click)="logout()">Logout</a>
     </nav>
   </div>
 </header>

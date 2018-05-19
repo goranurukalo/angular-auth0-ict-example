@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 import { AuthService } from './auth/auth.service';
 
 @Component({
@@ -11,13 +12,12 @@ export class AppComponent implements OnInit, OnDestroy {
   authSubscription: Subscription;
 
   constructor(
-    public auth: AuthService
+    public auth: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     // Subscribe to login status subject
-    // If authenticated, subscribe to dragons data observable
-    // If not authenticated, unsubscribe from dragons data
     this.authSubscription = this.auth.loggedIn$
       .subscribe(loggedIn => {
         if (loggedIn) {
@@ -27,6 +27,7 @@ export class AppComponent implements OnInit, OnDestroy {
           //
         } else {
           //not logged in
+          console.log("anonymous");
         }
       }
     );
@@ -35,6 +36,11 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     // Unsubscribe from observables
     this.authSubscription.unsubscribe();
+  }
+
+  logout(){
+    this.auth.logout();
+    this.router.navigate(['/']);
   }
 
 }

@@ -29,6 +29,7 @@ export class AuthService {
     // You can restore an unexpired authentication session on init
     // by using the checkSession() endpoint from auth0.js:
     // https://auth0.com/docs/libraries/auth0js/v9#using-checksession-to-acquire-new-tokens
+    this.getAccessToken();
   }
 
   private _setLoggedIn(value: boolean) {
@@ -65,14 +66,14 @@ export class AuthService {
     const expTime = authResult.expiresIn * 1000 + Date.now();
     // Save session data and update login status subject
     localStorage.setItem('expires_at', JSON.stringify(expTime));
-    this.accessToken = authResult.accessToken;
-    this.userProfile = profile;
-    this._setLoggedIn(true);
+    localStorage.setItem('token', JSON.stringify(authResult.accessToken));
+    this.setupProfile(authResult.accessToken, profile);
   }
 
   logout() {
     // Remove token and profile and update login status subject
     localStorage.removeItem('expires_at');
+    localStorage.removeItem('token');
     this.accessToken = undefined;
     this.userProfile = undefined;
     this._setLoggedIn(false);
@@ -82,7 +83,24 @@ export class AuthService {
     // Check if current date is greater than expiration
     // and user is currently logged in
     const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-    return (Date.now() < expiresAt) && this.loggedIn;
+    return (Date.now() < expiresAt) /*&& this.loggedIn*/;
+  }
+
+
+  getAccessToken() {
+    let accessToken = JSON.parse(localStorage.getItem('token'));
+    if(accessToken){
+      this._auth0.client.userInfo(accessToken, (err, profile) => {
+        this.setupProfile(accessToken, profile);
+      });
+    }
+
+  }
+
+  private setupProfile(accessToken, profile){
+    this.accessToken = accessToken;
+    this.userProfile = profile;
+    this._setLoggedIn(true);
   }
 
 }

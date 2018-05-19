@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from './../auth/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-profile',
@@ -7,12 +8,21 @@ import { AuthService } from './../auth/auth.service';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  profileArray = this._makeProfileArray(this.auth.userProfile);
+  profileArray = [];
+  authSubscription: Subscription;
+  profileName = "";
 
   constructor(public auth: AuthService) { }
 
   ngOnInit() {
-    console.log(this.auth.userProfile);
+    this.authSubscription = this.auth.loggedIn$
+      .subscribe(loggedIn => {
+        if (loggedIn) {
+          this.profileName = this.auth.userProfile.name;
+          this.profileArray = this._makeProfileArray(this.auth.userProfile);
+        }
+      }
+    );
   }
 
   private _makeProfileArray(obj) {

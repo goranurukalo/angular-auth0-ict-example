@@ -7,9 +7,9 @@ interface AuthConfig {
 }
 
 export const AUTH_CONFIG: AuthConfig = {
-  CLIENT_ID: 'ihvIbtkXsD55gnuX5dBRdg1xZFVTkwqT',
-  CLIENT_DOMAIN: 'goran-auth0-ict.eu.auth0.com',
-  AUDIENCE: 'https://goran-auth0-ict.eu.auth0.com/userinfo',
-  REDIRECT: 'http://localhost:4200/callback',
-  SCOPE: 'openid'
+  CLIENT_ID: '<CLIENT_ID>',
+  CLIENT_DOMAIN: '<CLIENT_DOMAIN>',
+  AUDIENCE: '<AUDIENCE>',
+  REDIRECT: '<REDIRECT>',
+  SCOPE: 'openid profile email'
 };
